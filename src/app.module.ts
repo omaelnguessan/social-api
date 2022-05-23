@@ -4,6 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { ArticleModule } from './article/article.module';
+import { ArticleMutationsResolver } from './article/resolvers/article.mutations.resolver';
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { join } from 'path';
         synchronize: true,
       }),
     }),
+    ArticleModule,
   ],
   controllers: [],
   providers: [],
