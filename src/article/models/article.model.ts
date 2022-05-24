@@ -1,13 +1,10 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Column, Entity } from 'typeorm';
+import { Node } from '../pagination/models/node.model';
 
 @Entity()
 @ObjectType()
-export class Article extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Article extends Node {
   @Field(() => String)
   @Column()
   title: string;

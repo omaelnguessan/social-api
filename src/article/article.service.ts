@@ -10,7 +10,12 @@ import {
   ArticleUpdateInput,
   ArticleUpdateOutput,
 } from './dto/article-update.dto';
+import {
+  ArticlePaginationArgs,
+  ArticlesPagination,
+} from './dto/articles-pagination.dto';
 import { Article } from './models/article.model';
+import { SortDirection } from './pagination/dto/pagination.dto';
 
 @Injectable()
 export class ArticleService {
@@ -21,6 +26,33 @@ export class ArticleService {
 
   async articlesList(): Promise<Article[]> {
     return await this.articleRepository.find({});
+  }
+
+  async articlesPagination(
+    args: ArticlePaginationArgs,
+  ): Promise<ArticlesPagination> {
+    const articleQueryBuilder =
+      this.articleRepository.createQueryBuilder('article');
+    articleQueryBuilder.take(args.take);
+    articleQueryBuilder.skip(args.skip);
+    if (args.sortBy) {
+      if (args.sortBy.createdAt) {
+        articleQueryBuilder.addOrderBy(
+          'article.createdAt',
+          args.sortBy.createdAt == SortDirection.DESC ? 'DESC' : 'ASC',
+        );
+      }
+      if (args.sortBy.title) {
+        articleQueryBuilder.addOrderBy(
+          'article.title',
+          args.sortBy.title == SortDirection.DESC ? 'DESC' : 'ASC',
+        );
+      }
+    }
+
+    const [nodes, totalCount] = await articleQueryBuilder.getManyAndCount();
+
+    return { nodes, totalCount };
   }
 
   async articleCreate(input: ArticleCreateInput): Promise<ArticleCreateOutput> {
