@@ -5,7 +5,7 @@ import {
   PaginationArgs,
   PaginationShortBy,
   SortDirection,
-} from '../pagination/dto/pagination.dto';
+} from '../../pagination/dto/pagination.dto';
 
 @InputType()
 export class ArticlesPaginationSortBy extends PaginationShortBy {

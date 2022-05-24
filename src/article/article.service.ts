@@ -15,7 +15,7 @@ import {
   ArticlesPagination,
 } from './dto/articles-pagination.dto';
 import { Article } from './models/article.model';
-import { SortDirection } from './pagination/dto/pagination.dto';
+import { SortDirection } from '../pagination/dto/pagination.dto';
 
 @Injectable()
 export class ArticleService {
