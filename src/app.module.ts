@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { ArticleModule } from './article/article.module';
 import { ArticleMutationsResolver } from './article/resolvers/article.mutations.resolver';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { ArticleMutationsResolver } from './article/resolvers/article.mutations.
       }),
     }),
     ArticleModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

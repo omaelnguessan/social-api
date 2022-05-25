@@ -1,4 +1,6 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
 import { ArticleService } from '../article.service';
 import {
@@ -16,11 +18,13 @@ import { Article } from '../models/article.model';
 export class ArticleMutationsResolver {
   constructor(private readonly articleService: ArticleService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => ArticleCreateOutput)
   async articleCreate(@Args('input') input: ArticleCreateInput) {
     return this.articleService.articleCreate(input);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => ArticleUpdateOutput)
   async articleUpdate(
     @Args({ name: 'articleId', type: () => ID }) articleId: Article['id'],
@@ -29,6 +33,7 @@ export class ArticleMutationsResolver {
     return this.articleService.articleUpdate(articleId, input);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => ArticleDeleteOutput)
   async articleDelete(
     @Args({ name: 'articleId', type: () => ID }) articleId: Article['id'],
