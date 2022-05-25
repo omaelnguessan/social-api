@@ -1,5 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
+import { JWTPayload } from 'src/auth/auth.service';
+import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
 import { ArticleService } from '../article.service';
@@ -20,8 +22,11 @@ export class ArticleMutationsResolver {
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => ArticleCreateOutput)
-  async articleCreate(@Args('input') input: ArticleCreateInput) {
-    return this.articleService.articleCreate(input);
+  async articleCreate(
+    @CurrentUser() user: JWTPayload,
+    @Args('input') input: ArticleCreateInput,
+  ) {
+    return this.articleService.articleCreate(user, input);
   }
 
   @UseGuards(JwtAuthGuard)

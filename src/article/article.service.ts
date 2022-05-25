@@ -16,6 +16,8 @@ import {
 } from './dto/articles-pagination.dto';
 import { Article } from './models/article.model';
 import { SortDirection } from '../pagination/dto/pagination.dto';
+import { JWTPayload } from '../auth/auth.service';
+import { User } from 'src/user/models/user.model';
 
 @Injectable()
 export class ArticleService {
@@ -55,9 +57,14 @@ export class ArticleService {
     return { nodes, totalCount };
   }
 
-  async articleCreate(input: ArticleCreateInput): Promise<ArticleCreateOutput> {
-    const newArticle = this.articleRepository.create(input);
-    const article = await this.articleRepository.save(newArticle);
+  async articleCreate(
+    user: JWTPayload,
+    input: ArticleCreateInput,
+  ): Promise<ArticleCreateOutput> {
+    const article = this.articleRepository.create(input);
+    article.author = new User();
+    article.author.id = user.id;
+    await article.save();
     return { article };
   }
 
