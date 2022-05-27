@@ -1,19 +1,16 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
-import { JWTPayload } from 'src/auth/auth.service';
+import { JWTPayload } from '../../auth/auth.service';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-
 import { ArticleService } from '../article.service';
 import {
   ArticleCreateInput,
   ArticleCreateOutput,
-} from '../dto/article-create.dto';
-import { ArticleDeleteOutput } from '../dto/article-delete.dto';
-import {
+  ArticleDeleteOutput,
   ArticleUpdateInput,
   ArticleUpdateOutput,
-} from '../dto/article-update.dto';
+} from '../dto';
 import { Article } from '../models/article.model';
 
 @Resolver(Article)

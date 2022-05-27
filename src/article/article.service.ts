@@ -2,18 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
+  ArticleCommentsPagination,
   ArticleCreateInput,
   ArticleCreateOutput,
-} from './dto/article-create.dto';
-import { ArticleDeleteOutput } from './dto/article-delete.dto';
-import {
+  ArticleDeleteOutput,
   ArticleUpdateInput,
   ArticleUpdateOutput,
-} from './dto/article-update.dto';
-import {
-  ArticlePaginationArgs,
   ArticlesPagination,
-} from './dto/articles-pagination.dto';
+  ArticlePaginationArgs,
+} from './dto';
+
 import { Article } from './models/article.model';
 import {
   PaginationArgs,
@@ -21,7 +19,6 @@ import {
 } from '../pagination/dto/pagination.dto';
 import { JWTPayload } from '../auth/auth.service';
 import { User } from '../user/models/user.model';
-import { ArticleCommentsPagination } from './dto/article-comments-pagination.dto';
 import { Comment } from '../comment/models/comment.model';
 
 @Injectable()

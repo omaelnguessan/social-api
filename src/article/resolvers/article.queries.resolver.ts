@@ -1,9 +1,6 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { ArticleService } from '../article.service';
-import {
-  ArticlesPagination,
-  ArticlePaginationArgs,
-} from '../dto/articles-pagination.dto';
+import { ArticlesPagination, ArticlePaginationArgs } from '../dto';
 import { Article } from '../models/article.model';
 
 @Resolver(Article)

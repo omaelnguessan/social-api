@@ -1,11 +1,10 @@
 import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { PaginationArgs } from '../../pagination/dto/pagination.dto';
-import { Comment } from '../../comment/models/comment.model';
 import { User } from '../../user/models/user.model';
 import { UserService } from '../../user/user.service';
 import { Article } from '../models/article.model';
 import { ArticleService } from '../article.service';
-import { ArticleCommentsPagination } from '../dto/article-comments-pagination.dto';
+import { ArticleCommentsPagination } from '../dto';
 
 @Resolver(Article)
 export class ArticleFieldsResolver {
