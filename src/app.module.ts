@@ -8,6 +8,7 @@ import { ArticleModule } from './article/article.module';
 import { ArticleMutationsResolver } from './article/resolvers/article.mutations.resolver';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { UserModule } from './user/user.module';
     ArticleModule,
     AuthModule,
     UserModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],

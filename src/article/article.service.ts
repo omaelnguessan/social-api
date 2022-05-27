@@ -15,15 +15,22 @@ import {
   ArticlesPagination,
 } from './dto/articles-pagination.dto';
 import { Article } from './models/article.model';
-import { SortDirection } from '../pagination/dto/pagination.dto';
+import {
+  PaginationArgs,
+  SortDirection,
+} from '../pagination/dto/pagination.dto';
 import { JWTPayload } from '../auth/auth.service';
-import { User } from 'src/user/models/user.model';
+import { User } from '../user/models/user.model';
+import { ArticleCommentsPagination } from './dto/article-comments-pagination.dto';
+import { Comment } from '../comment/models/comment.model';
 
 @Injectable()
 export class ArticleService {
   constructor(
     @InjectRepository(Article)
     private readonly articleRepository: Repository<Article>,
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
   ) {}
 
   async articlesList(): Promise<Article[]> {
@@ -66,6 +73,27 @@ export class ArticleService {
     article.author.id = user.id;
     await article.save();
     return { article };
+  }
+
+  async articleGetById(id: Article['id']): Promise<Article> {
+    return await this.articleRepository.findOneOrFail({ id });
+  }
+
+  async articleCommentsPagination(
+    articleId: Article['id'],
+    args: PaginationArgs,
+  ): Promise<ArticleCommentsPagination> {
+    const [nodes, totalCount] = await this.commentRepository.findAndCount({
+      skip: args.skip,
+      take: args.take,
+      where: { article: { id: articleId } },
+      order: {
+        createdAt:
+          args.sortBy?.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
+      },
+    });
+
+    return { nodes, totalCount };
   }
 
   async articleUpdate(

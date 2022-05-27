@@ -21,6 +21,16 @@ type Article {
   description: String!
   image: String!
   author: User
+  comments(skip: Int!, take: Int!, sortBy: PaginationShortBy): ArticleCommentsPagination
+}
+
+input PaginationShortBy {
+  createdAt: SortDirection
+}
+
+enum SortDirection {
+  ASC
+  DESC
 }
 
 type User {
@@ -33,8 +43,20 @@ type User {
   email: String!
 }
 
+type Comment {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  message: String!
+}
+
 type UserCreateOutput {
   user: User!
+}
+
+type ArticleCommentsPagination {
+  totalCount: Int!
+  nodes: [Comment!]!
 }
 
 type ArticleCreateOutput {
@@ -58,6 +80,10 @@ type AuthLoginOutput {
   accessToken: String!
 }
 
+type CommentCreateOutput {
+  comment: Comment!
+}
+
 type Query {
   articlesPagination(skip: Int!, take: Int!, sortBy: ArticlesPaginationSortBy): ArticlesPagination!
 }
@@ -67,17 +93,13 @@ input ArticlesPaginationSortBy {
   title: SortDirection
 }
 
-enum SortDirection {
-  ASC
-  DESC
-}
-
 type Mutation {
   articleCreate(input: ArticleCreateInput!): ArticleCreateOutput!
   articleUpdate(articleId: ID!, input: ArticleUpdateInput!): ArticleUpdateOutput!
   articleDelete(articleId: ID!): ArticleDeleteOutput!
   userCreate(input: UserCreateInput!): UserCreateOutput!
   authLogin(username: String!, password: String!): AuthLoginOutput!
+  commentCreate(input: CommentCreateInput!): CommentCreateOutput!
 }
 
 input ArticleCreateInput {
@@ -98,4 +120,9 @@ input UserCreateInput {
   avatar: String
   email: String!
   password: String!
+}
+
+input CommentCreateInput {
+  message: String!
+  articleId: String!
 }

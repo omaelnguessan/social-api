@@ -28,6 +28,9 @@ export class PaginationArgs {
 
   @Field(() => Int)
   take: number;
+
+  @Field(() => PaginationShortBy, { nullable: true })
+  sortBy?: PaginationShortBy;
 }
 
 @InterfaceType()

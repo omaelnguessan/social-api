@@ -1,6 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { User } from '../../user/models/user.model';
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Comment } from '../../comment/models/comment.model';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Node } from '../../pagination/models/node.model';
 
 @Entity()
@@ -24,4 +32,7 @@ export class Article extends Node {
 
   @RelationId((self: Article) => self.author)
   readonly authorId: User['id'];
+
+  @OneToMany(() => Comment, (target) => target.article)
+  comments: Comment;
 }
