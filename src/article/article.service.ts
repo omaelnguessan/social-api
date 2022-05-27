@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -73,7 +73,9 @@ export class ArticleService {
   }
 
   async articleGetById(id: Article['id']): Promise<Article> {
-    return await this.articleRepository.findOneOrFail({ id });
+    const article = await this.articleRepository.findOneOrFail({ id });
+    if (!article) throw new NotFoundException('article not found');
+    return article;
   }
 
   async articleCommentsPagination(
@@ -94,12 +96,16 @@ export class ArticleService {
   }
 
   async articleUpdate(
+    user: JWTPayload,
     articleId: Article['id'],
     input: ArticleUpdateInput,
   ): Promise<ArticleUpdateOutput> {
     const article = await this.articleRepository.findOneOrFail({
       id: articleId,
+      authorId: user.id,
     });
+
+    if (!article) throw new NotFoundException('article not found');
 
     const { title, description, image } = input;
     article.title = title;
@@ -110,8 +116,17 @@ export class ArticleService {
     return { article };
   }
 
-  async articleDelete(articleId: Article['id']): Promise<ArticleDeleteOutput> {
-    const article = await this.articleRepository.findOne({ id: articleId });
+  async articleDelete(
+    user: JWTPayload,
+    articleId: Article['id'],
+  ): Promise<ArticleDeleteOutput> {
+    const article = await this.articleRepository.findOne({
+      id: articleId,
+      authorId: user.id,
+    });
+
+    if (!article) throw new NotFoundException('article not found');
+
     await article.remove();
     return { article };
   }

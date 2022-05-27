@@ -29,17 +29,19 @@ export class ArticleMutationsResolver {
   @UseGuards(JwtAuthGuard)
   @Mutation(() => ArticleUpdateOutput)
   async articleUpdate(
+    @CurrentUser() user: JWTPayload,
     @Args({ name: 'articleId', type: () => ID }) articleId: Article['id'],
     @Args('input') input: ArticleUpdateInput,
   ) {
-    return this.articleService.articleUpdate(articleId, input);
+    return this.articleService.articleUpdate(user, articleId, input);
   }
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => ArticleDeleteOutput)
   async articleDelete(
+    @CurrentUser() user: JWTPayload,
     @Args({ name: 'articleId', type: () => ID }) articleId: Article['id'],
   ) {
-    return this.articleService.articleDelete(articleId);
+    return this.articleService.articleDelete(user, articleId);
   }
 }

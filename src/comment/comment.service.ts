@@ -6,7 +6,8 @@ import { Repository } from 'typeorm';
 import {
   CommentCreateInput,
   CommentCreateOutput,
-} from './dto/comment-create.dto';
+  CommentDeleteOutput,
+} from './dto';
 import { Comment } from './models/comment.model';
 import { User } from '../user/models/user.model';
 
@@ -30,6 +31,19 @@ export class CommentService {
     comment.article = article;
     comment.message = input.message;
     await comment.save();
+
+    return { comment };
+  }
+
+  async commentDelete(
+    user: JWTPayload,
+    commentId: Comment['id'],
+  ): Promise<CommentDeleteOutput> {
+    const comment = await this.commentRepository.findOne({
+      id: commentId,
+      authorId: user.id,
+    });
+    await comment.remove();
 
     return { comment };
   }

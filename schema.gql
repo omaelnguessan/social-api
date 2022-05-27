@@ -84,6 +84,10 @@ type CommentCreateOutput {
   comment: Comment!
 }
 
+type CommentDeleteOutput {
+  comment: Comment!
+}
+
 type Query {
   articlesPagination(skip: Int!, take: Int!, sortBy: ArticlesPaginationSortBy): ArticlesPagination!
 }
@@ -100,6 +104,7 @@ type Mutation {
   userCreate(input: UserCreateInput!): UserCreateOutput!
   authLogin(username: String!, password: String!): AuthLoginOutput!
   commentCreate(input: CommentCreateInput!): CommentCreateOutput!
+  commentDelete(commentId: ID!): CommentDeleteOutput!
 }
 
 input ArticleCreateInput {
