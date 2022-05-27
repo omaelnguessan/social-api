@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { User } from 'src/user/models/user.model';
+import { User } from '../../user/models/user.model';
 import { AuthService } from '../auth.service';
 import { AuthLoginOutput } from '../dto/auth-login.dto';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
