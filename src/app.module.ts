@@ -9,6 +9,7 @@ import { ArticleMutationsResolver } from './article/resolvers/article.mutations.
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
+import { ReactModule } from './react/react.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CommentModule } from './comment/comment.module';
     AuthModule,
     UserModule,
     CommentModule,
+    ReactModule,
   ],
   controllers: [],
   providers: [],

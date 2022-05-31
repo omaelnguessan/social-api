@@ -10,6 +10,7 @@ import {
   RelationId,
 } from 'typeorm';
 import { Node } from '../../pagination/models/node.model';
+import { React } from '../../react/models/react.model';
 
 @Entity()
 @ObjectType()
@@ -35,4 +36,7 @@ export class Article extends Node {
 
   @OneToMany(() => Comment, (target) => target.article)
   comments: Comment;
+
+  @OneToMany(() => React, (target) => target.article)
+  reacts: React[];
 }

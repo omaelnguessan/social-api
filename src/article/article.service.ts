@@ -10,6 +10,7 @@ import {
   ArticleUpdateOutput,
   ArticlesPagination,
   ArticlePaginationArgs,
+  ArticleReactsPagination,
 } from './dto';
 
 import { Article } from './models/article.model';
@@ -20,6 +21,7 @@ import {
 import { JWTPayload } from '../auth/auth.service';
 import { User } from '../user/models/user.model';
 import { Comment } from '../comment/models/comment.model';
+import { React } from '../react/models/react.model';
 
 @Injectable()
 export class ArticleService {
@@ -28,6 +30,8 @@ export class ArticleService {
     private readonly articleRepository: Repository<Article>,
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
+    @InjectRepository(React)
+    private readonly reactRepository: Repository<React>,
   ) {}
 
   async articlesList(): Promise<Article[]> {
@@ -83,6 +87,23 @@ export class ArticleService {
     args: PaginationArgs,
   ): Promise<ArticleCommentsPagination> {
     const [nodes, totalCount] = await this.commentRepository.findAndCount({
+      skip: args.skip,
+      take: args.take,
+      where: { article: { id: articleId } },
+      order: {
+        createdAt:
+          args.sortBy?.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
+      },
+    });
+
+    return { nodes, totalCount };
+  }
+
+  async articleReactsPagination(
+    articleId: Article['id'],
+    args: PaginationArgs,
+  ): Promise<ArticleReactsPagination> {
+    const [nodes, totalCount] = await this.reactRepository.findAndCount({
       skip: args.skip,
       take: args.take,
       where: { article: { id: articleId } },

@@ -4,7 +4,7 @@ import { User } from '../../user/models/user.model';
 import { UserService } from '../../user/user.service';
 import { Article } from '../models/article.model';
 import { ArticleService } from '../article.service';
-import { ArticleCommentsPagination } from '../dto';
+import { ArticleCommentsPagination, ArticleReactsPagination } from '../dto';
 
 @Resolver(Article)
 export class ArticleFieldsResolver {
@@ -29,5 +29,10 @@ export class ArticleFieldsResolver {
       article.id,
       args,
     );
+  }
+
+  @ResolveField(() => ArticleReactsPagination, { nullable: true })
+  async reacts(@Parent() article: Article, @Args() args: PaginationArgs) {
+    return await this.articleService.articleReactsPagination(article.id, args);
   }
 }

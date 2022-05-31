@@ -3,6 +3,7 @@ import { Node } from '../../pagination/models/node.model';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Article } from '../../article/models/article.model';
 import { Comment } from '../../comment/models/comment.model';
+import { React } from '../../react/models/react.model';
 
 @Entity()
 @ObjectType()
@@ -31,4 +32,7 @@ export class User extends Node {
 
   @OneToMany(() => Comment, (target) => target.author)
   comments: Comment[];
+
+  @OneToMany(() => React, (target) => target.author)
+  reacts: React[];
 }
